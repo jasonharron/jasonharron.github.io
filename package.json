@@ -1,0 +1,14 @@
+{
+  "main": "/public/index.html",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.1",
+    "three": "^0.155.0"
+  },
+  "engines": {
+    "node": "16.x"
+  }
+}
