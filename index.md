@@ -16,7 +16,7 @@
     <section id="loading-screen">
 
 	<div id="loader"></div>
-        <div id="title">ColabXR - KSU 3D Lab Demo</div>
+        <div id="title">Quest 3 - Ballshooter / Mesh Export Tool - By Jason Harron</div>
       <div id="count">
 Step 1: Use Scene Setup Tool on Quest 3
 (Settings -> Physical Space -> Space Setup -> Set Up)<br>
@@ -25,7 +25,8 @@ Step 2: Set a Boundary
 Step 3: Load Website and Select "Start AR"
 (https://jasonharron.com/github.io)<br>
 Step 4: Have fun!<br>
-Controls: Main triggers = Shoot balls, X = Hide Room, Y = Export Room to JSON
+Controls: Main triggers = Shoot balls, X = Hide Room, Y = Export Room to JSON<br>
+(NOTE: Also works on Quest 1 with Walls and Quest 2 with Walls+Furniture)
 </div>
 </section>
     <script type="importmap">
