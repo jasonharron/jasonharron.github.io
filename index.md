@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>My first three.js app</title>
+		<title>Mesh Export Tool</title>
     	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<meta name="mobile-web-app-capable" content="yes">
@@ -13,6 +13,21 @@
 		</style>
 	</head>
 	<body>
+    <section id="loading-screen">
+
+	<div id="loader"></div>
+        <div id="title">ColabXR - KSU 3D Lab Demo</div>
+      <div id="count">
+Step 1: Use Scene Setup Tool on Quest 3
+(Settings -> Physical Space -> Space Setup -> Set Up)<br>
+Step 2: Set a Boundary
+(Settings -> Physical Space -> Boundary)<br>
+Step 3: Load Website and Select "Start AR"
+(https://jasonharron.com/github.io)<br>
+Step 4: Have fun!<br>
+Controls: Main triggers = Shoot balls, X = Hide Room, Y = Export Room to JSON
+</div>
+</section>
     <script type="importmap">
       {
         "imports": {

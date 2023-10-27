@@ -1228,6 +1228,9 @@ function dollyMove() {
           old.buttons[5] == 0 &&
           data.handedness == "left"
         ) {
+          meshGroup.visible = true;
+          lineGroup.visible = true;
+          planeGroup.visible = true;
           exportScene();
         }
 
@@ -1722,48 +1725,50 @@ function exportScene() {
   function saveString(text, filename) {
     save(new Blob([text], { type: "text/plain" }), filename);
   }
+  
+  const clonedScene = cloneScene(scene);
 
   if (spheres) {
-    spheres.geometry.dispose();
-    spheres.material.dispose();
-    scene.remove(spheres);
+   // spheres.geometry.dispose();
+   // spheres.material.dispose();
+    clonedScene.remove(spheres);
   }
   if (controller) {
-    scene.remove(controller);
+    clonedScene.remove(controller);
   }
   if (controller1) {
-    scene.remove(controller1);
+    clonedScene.remove(controller1);
   }
 
   if (controller2) {
-    scene.remove(controller2);
+    clonedScene.remove(controller2);
   }
 
   if (controllerGrip1) {
     //controllerGrip1.geometry.dispose();
     //controllerGrip1.material.dispose();
-    scene.remove(controllerGrip1);
+    clonedScene.remove(controllerGrip1);
   }
 
   if (controllerGrip2) {
     //controllerGrip2.geometry.dispose();
     //controllerGrip2.material.dispose();
-    scene.remove(controllerGrip2);
+    clonedScene.remove(controllerGrip2);
   }
   if (lineGroup) {
     lineGroup.traverse((lineGroup) => lineGroup.dispose?.());
     //lineGroup.geometry.dispose();
     //lineGroup.material.dispose();
-    scene.remove(lineGroup);
+    clonedScene.remove(lineGroup);
   }
 
   if (reticle) {
-    reticle.geometry.dispose();
-    reticle.material.dispose();
-    scene.remove(reticle);
+    //reticle.geometry.dispose();
+    //reticle.material.dispose();
+    clonedScene.remove(reticle);
   }
 
-  let output = scene.toJSON();
+  let output = clonedScene.toJSON();
 
   try {
     output = JSON.stringify(output, null, "\t");
@@ -1784,4 +1789,19 @@ function exportScene() {
   }
 
   // saveString(outputRef, "referenceSpace.json");
+}
+
+function cloneScene(originalScene) {
+  const clonedScene = new THREE.Scene();
+
+  // Clone objects from the original scene to the cloned scene
+  originalScene.traverse((originalObject) => {
+    if (originalObject.isMesh) {
+      const clonedObject = originalObject.clone();
+      clonedScene.add(clonedObject);
+    }
+    // You can add additional checks and cloning logic for other object types like lights and cameras.
+  });
+
+  return clonedScene;
 }

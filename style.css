@@ -10,3 +10,71 @@ canvas {
   width: 100%;
   height: 100%;
 }
+
+
+#count {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    color: white;
+    font-family: Arial, sans-serif; /* Use a non-serif font */
+    z-index: 3; /* Set the z-index to 3 */
+  white-space: pre;
+}
+
+#title {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
+    color: white;
+    font-family: Arial, sans-serif; /* Use a non-serif font */
+    z-index: 3; /* Set the z-index to 3 */
+  white-space: pre;
+}
+
+#loading-screen {
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #000000;
+	opacity: 1;
+ 	transition: 1s opacity;
+}
+
+#loading-screen.fade-out {
+    opacity: 0;
+}
+
+
+}
+@-webkit-keyframes spin {
+    0%   {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes spin {
+    0%   {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
