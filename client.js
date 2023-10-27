@@ -169,7 +169,7 @@ class XRPlanes extends Object3D {
           const mesh = new THREE.Mesh(geometry, material);
           mesh.position.setFromMatrixPosition(matrix);
           mesh.quaternion.setFromRotationMatrix(matrix);
-          mesh.name = plane.name;
+          mesh.name = "Plane";
           planeGroup.add(mesh);
 
           var centerMesh = getCenterPoint(mesh);
@@ -1796,7 +1796,7 @@ function cloneScene(originalScene) {
 
   // Clone objects from the original scene to the cloned scene
   originalScene.traverse((originalObject) => {
-    if (originalObject.name == "Wireframe Mesh") {
+    if (originalObject.name == "Wireframe Mesh" || originalObject.name == "Plane") {
       const clonedObject = originalObject.clone();
       clonedScene.add(clonedObject);
     }
