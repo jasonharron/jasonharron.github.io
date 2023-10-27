@@ -25,7 +25,8 @@ Step 2: Set a Boundary
 Step 3: Load Website and Select "Start AR"
 (https://jasonharron.com/github.io)<br>
 Step 4: Have fun!<br>
-Controls: Main triggers = Shoot balls, X = Hide Room, Y = Export Room to JSON<br>
+Controls: Main triggers = Shoot balls, X = Hide Room, Y = Export Room to JSON
+(Exported rooms can be sent via e-mail [attach from Download folder] and viewed in the ThreeJS Editor.).<br>
 (NOTE: Also works on Quest 1 with Walls and Quest 2 with Walls+Furniture)
 </div>
 </section>
