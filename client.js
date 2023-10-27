@@ -1796,7 +1796,7 @@ function cloneScene(originalScene) {
 
   // Clone objects from the original scene to the cloned scene
   originalScene.traverse((originalObject) => {
-    if (originalObject.isMesh) {
+    if (originalObject.name == "Wireframe Mesh") {
       const clonedObject = originalObject.clone();
       clonedScene.add(clonedObject);
     }
