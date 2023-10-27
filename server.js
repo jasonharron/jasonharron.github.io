@@ -8,7 +8,7 @@ const io = new Server(server);
 
 let clock = Date.now();
 
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/"));
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
