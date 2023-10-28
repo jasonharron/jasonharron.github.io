@@ -217,7 +217,7 @@ await initPhysics();
 
 function init() {
   let userArrayFromServer = {
-    id: 12345,
+    id: "12345",
     color: 0,
     presenting: 0,
     ar: 0,
@@ -281,8 +281,8 @@ function init() {
     addLocalClientToVR();
     planes = new XRPlanes(renderer);
     planeGroup.add(planes);
-    physics.addMesh(controllerGrip1);
-    physics.addMesh(controllerGrip2);
+    //physics.addMesh(controllerGrip1);
+    //physics.addMesh(controllerGrip2);
   });
 
   //
