@@ -16,7 +16,7 @@
     <section id="loading-screen">
 
 	<div id="loader"></div>
-        <div id="title">Quest 3 - Ballshooter / Mesh Export Tool - By Jason Harron</div>
+        <div id="title">Quest 3 - Ballshooter / Mesh Export Tool</div>
       <div id="count">
 Step 1: Use Scene Setup Tool on Quest 3
 (Settings -> Physical Space -> Space Setup -> Set Up)<br>
