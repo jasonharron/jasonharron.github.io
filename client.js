@@ -455,7 +455,7 @@ async function initPhysics() {
   const geometry = new THREE.IcosahedronGeometry(0.05, 3);
   const material = new THREE.MeshLambertMaterial();
 
-  spheres = new THREE.InstancedMesh(geometry, material, 100);
+  spheres = new THREE.InstancedMesh(geometry, material, 300);
   spheres.instanceMatrix.setUsage(THREE.DynamicDrawUsage); // will be updated every frame
   spheres.renderOrder = 1;
   scene.add(spheres);
@@ -948,7 +948,7 @@ function addMeshDetectionPhysics(data) {
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.setFromMatrixPosition(data.matrix);
     mesh.quaternion.setFromRotationMatrix(data.matrix);
-    mesh.name = "furniture";
+    mesh.name = "Furniture";
     meshGroup.add(mesh);
 
     const edges = new THREE.EdgesGeometry(geometry);
@@ -984,9 +984,21 @@ function addMeshDetectionPhysics(data) {
       colorWrite: false,
       renderOrder: 2,
     });
-    const material2 = new THREE.MeshBasicMaterial({
+    
+  /*  
+        let material2 = new THREE.MeshLambertMaterial({
+      color: 0xff0000,
+      //transparent: data.transparent,
+      //opacity: data.opacity,
+      transparent: true,
+      opacity: 0.5,
+    });
+  // } else {
+  */
+    let material2 = new THREE.MeshBasicMaterial({
       wireframe: true,
     });
+
 
     // create a buffer geometry
     const occlusionMesh = new THREE.Mesh(geometry, material);
@@ -1796,7 +1808,7 @@ function cloneScene(originalScene) {
 
   // Clone objects from the original scene to the cloned scene
   originalScene.traverse((originalObject) => {
-    if (originalObject.name == "Wireframe Mesh" || originalObject.name == "Plane") {
+    if (originalObject.name == "Wireframe Mesh" || originalObject.name == "Plane" || originalObject.name == "Hemisphere Light" || originalObject.name == "Directional Light" || originalObject.name == "Furniture") {
       const clonedObject = originalObject.clone();
       clonedScene.add(clonedObject);
     }
