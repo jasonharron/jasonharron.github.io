@@ -23,7 +23,7 @@ Step 1: Use Scene Setup Tool on Quest 3
 Step 2: Set a Boundary
 (Settings -> Physical Space -> Boundary)<br>
 Step 3: Load Website and Select "Start AR"
-(https://jasonharron.com/github.io)<br>
+(https://jasonharron.github.io)<br>
 Step 4: Have fun!<br>
 Controls: Main triggers = Shoot balls, X = Hide Room, Y = Export Room to JSON
 (Exported rooms can be sent via e-mail [attach from Download folder] and viewed in the ThreeJS Editor.).<br>
