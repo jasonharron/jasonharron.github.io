@@ -158,17 +158,23 @@ class XRPlanes extends Object3D {
           const height = maxZ - minZ;
 
           const geometry = new THREE.BoxGeometry(width, 0.0001, height);
-          const material = new THREE.MeshLambertMaterial({
+            //  let material = new THREE.ShadowMaterial({ color: 0x444444 });
+          
+        /*  const material = new THREE.MeshLambertMaterial({
             color: 0x75d2e0, //0xffffff * Math.random(),
             transparent: true,
             opacity: 0.2,
             //wireframe: true,
             //wireframeLinewidth: 3,
           });
+          */
+          const material = new THREE.ShadowMaterial( { color: 0x444444, transparent: true, opacity: 0.6 } );
 
           const mesh = new THREE.Mesh(geometry, material);
           mesh.position.setFromMatrixPosition(matrix);
           mesh.quaternion.setFromRotationMatrix(matrix);
+          //mesh.castShadow = true;
+          mesh.receiveShadow = true;
           mesh.name = "Plane";
           planeGroup.add(mesh);
 
@@ -229,12 +235,12 @@ function init() {
     posX: 0,
     posY: 0,
     posZ: 0,
+  };
+  userArray.push(userArrayFromServer);
+  if (userArray.length === 1) {
+    checkForXR();
   }
-      userArray.push(userArrayFromServer);
-    if (userArray.length === 1) {
-      checkForXR();
-    }
-  
+
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x505050);
 
@@ -253,13 +259,24 @@ function init() {
   );
   room.geometry.translate(0, 3, 0);
   //scene.add(room);
+  
+  
   const hemLight = new THREE.HemisphereLight(0xbbbbbb, 0x888888, 5);
   hemLight.name = "Hemisphere Light";
+  //hemLight.castShadow = true;
+  //hemLight.shadow.camera.zoom = 2;
   scene.add(hemLight);
 
   const light = new THREE.DirectionalLight(0xffffff, 3);
-  light.position.set(1, 1, 1).normalize();
+  light.position.set(0, 20, 0).normalize();
   light.name = "Directional Light";
+  light.castShadow = true;
+  //light.shadow.camera.zoom = 5;
+//Set up shadow properties for the light
+light.shadow.mapSize.width = 1024; // default
+light.shadow.mapSize.height = 1024; // default
+light.shadow.camera.near = 0; // default
+light.shadow.camera.far = 500; // default
   scene.add(light);
 
   // Alternatively, to parse a previously loaded JSON structure
@@ -271,7 +288,8 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
-  renderer.useLegacyLights = false;
+  //renderer.useLegacyLights = false;
+  renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
   renderer.xr.setReferenceSpaceType("local-floor");
   document.body.appendChild(renderer.domElement);
@@ -398,8 +416,6 @@ function init() {
   scene.add(planeGroup);
   scene.add(lineGroup);
   scene.add(occlusionGroup);
-  
-  
 
   // Mesh-detection
   updateState();
@@ -419,7 +435,6 @@ async function initPhysics() {
   physics = await RapierPhysics();
 
   {
-
     const geometry = new THREE.BoxGeometry(6, 2, 6);
     const material = new THREE.MeshNormalMaterial();
 
@@ -458,6 +473,8 @@ async function initPhysics() {
   spheres = new THREE.InstancedMesh(geometry, material, 300);
   spheres.instanceMatrix.setUsage(THREE.DynamicDrawUsage); // will be updated every frame
   spheres.renderOrder = 1;
+  spheres.castShadow = true;
+  spheres.receiveShadow = true;
   scene.add(spheres);
 
   const matrix = new THREE.Matrix4();
@@ -481,7 +498,6 @@ async function initPhysics() {
   }
 
   physics.addMesh(spheres, 1, 1.1);
-
 }
 
 /////////////////
@@ -654,7 +670,6 @@ function handleController(controller) {
       velocity.applyQuaternion(controller.quaternion);
 
       physics.setMeshVelocity(spheres, velocity, count);
-
     } else if (pressCount >= 1) {
       pressCount = 0;
 
@@ -667,7 +682,6 @@ function handleController(controller) {
       velocity.applyQuaternion(controller.quaternion);
 
       physics.setMeshVelocity(spheres, velocity, count);
-
     }
     if (++count === spheres.count) {
       count = 0;
@@ -773,7 +787,6 @@ function render(timestamp, frame) {
     }
   }
   renderer.render(scene, camera);
-
 }
 
 function randomColor() {
@@ -855,7 +868,7 @@ function addMeshDetectionPhysics(data) {
       //transparent: data.transparent,
       //opacity: data.opacity,
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.8,
     });
 
     // create a buffer geometry
@@ -979,13 +992,16 @@ function addMeshDetectionPhysics(data) {
     const vertices = new Float32Array(data.vertices);
     const indices = new Uint32Array(data.indices);
     const geometry = createGeometry(vertices, indices);
-    const material = new THREE.MeshBasicMaterial({
+    const material = new THREE.MeshLambertMaterial({
       //wireframe: true,
       colorWrite: false,
+      //transparent: true,
+      //opacity: 0,
       renderOrder: 2,
+      //receiveShadow: true,
     });
-    
-  /*  
+
+    /*  
         let material2 = new THREE.MeshLambertMaterial({
       color: 0xff0000,
       //transparent: data.transparent,
@@ -998,7 +1014,7 @@ function addMeshDetectionPhysics(data) {
     let material2 = new THREE.MeshBasicMaterial({
       wireframe: true,
     });
-
+    const material3 = new THREE.ShadowMaterial( { color: 0x444444, transparent: true, opacity: 0.6, renderOrder: 3 } );
 
     // create a buffer geometry
     const occlusionMesh = new THREE.Mesh(geometry, material);
@@ -1008,8 +1024,15 @@ function addMeshDetectionPhysics(data) {
     wireframeMesh.position.setFromMatrixPosition(data.matrix);
     wireframeMesh.quaternion.setFromRotationMatrix(data.matrix);
     occlusionMesh.name = "Occlusion Mesh";
+    const shadowMesh = new THREE.Mesh(geometry, material3);
+    shadowMesh.position.setFromMatrixPosition(data.matrix);
+    shadowMesh.quaternion.setFromRotationMatrix(data.matrix);
+    shadowMesh.receiveShadow = true;
+    shadowMesh.name = "Shadow Mesh";
+    scene.add(shadowMesh);
     occlusionGroup.add(occlusionMesh);
     wireframeMesh.name = "Wireframe Mesh";
+    //wireframeMesh.receiveShadow = true;
     meshGroup.add(wireframeMesh);
     physics.addMesh(wireframeMesh);
   }
@@ -1019,6 +1042,7 @@ function createGeometry(vertices, indices) {
   const geometry = new THREE.BufferGeometry();
   geometry.setIndex(new THREE.BufferAttribute(indices, 1));
   geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+  geometry.computeVertexNormals();
   return geometry;
 }
 
@@ -1737,12 +1761,12 @@ function exportScene() {
   function saveString(text, filename) {
     save(new Blob([text], { type: "text/plain" }), filename);
   }
-  
+
   const clonedScene = cloneScene(scene);
 
   if (spheres) {
-   // spheres.geometry.dispose();
-   // spheres.material.dispose();
+    // spheres.geometry.dispose();
+    // spheres.material.dispose();
     clonedScene.remove(spheres);
   }
   if (controller) {
@@ -1808,7 +1832,13 @@ function cloneScene(originalScene) {
 
   // Clone objects from the original scene to the cloned scene
   originalScene.traverse((originalObject) => {
-    if (originalObject.name == "Wireframe Mesh" || originalObject.name == "Plane" || originalObject.name == "Hemisphere Light" || originalObject.name == "Directional Light" || originalObject.name == "Furniture") {
+    if (
+      originalObject.name == "Wireframe Mesh" ||
+      originalObject.name == "Plane" ||
+      originalObject.name == "Hemisphere Light" ||
+      originalObject.name == "Directional Light" ||
+      originalObject.name == "Furniture"
+    ) {
       const clonedObject = originalObject.clone();
       clonedScene.add(clonedObject);
     }
