@@ -158,24 +158,45 @@ class XRPlanes extends Object3D {
           const height = maxZ - minZ;
 
           const geometry = new THREE.BoxGeometry(width, 0.0001, height);
-            //  let material = new THREE.ShadowMaterial({ color: 0x444444 });
-          
-        /*  const material = new THREE.MeshLambertMaterial({
+          //  let material = new THREE.ShadowMaterial({ color: 0x444444 });
+/*
+          const material = new THREE.MeshLambertMaterial({
             color: 0x75d2e0, //0xffffff * Math.random(),
             transparent: true,
             opacity: 0.2,
             //wireframe: true,
             //wireframeLinewidth: 3,
           });
-          */
-          const material = new THREE.ShadowMaterial( { color: 0x444444, transparent: true, opacity: 0.6 } );
+*/
+          
+          const material = new THREE.ShadowMaterial({
+            color: 0x444444,
+            transparent: true,
+            opacity: 0.6,
+          });
 
+/*
+           if (planeGroup.children.length === 1) {
+            material.color.set(0, 1, 0);
+          } else if (planeGroup.children.length === 2) {
+            material.color.set(0, 0, 1);
+          } else if (planeGroup.children.length === 3) {
+            material.color.set(1, 1, 0);
+          } else if (planeGroup.children.length === 4) {
+            material.color.set(1, 0, 1);
+          } else if (planeGroup.children.length === 5) {
+            material.color.set(0, 1, 1);
+          } else {
+            material.color.set(1, 0, 0);
+          }
+          */
           const mesh = new THREE.Mesh(geometry, material);
           mesh.position.setFromMatrixPosition(matrix);
           mesh.quaternion.setFromRotationMatrix(matrix);
           //mesh.castShadow = true;
           mesh.receiveShadow = true;
           mesh.name = "Plane";
+
           planeGroup.add(mesh);
 
           var centerMesh = getCenterPoint(mesh);
@@ -259,8 +280,7 @@ function init() {
   );
   room.geometry.translate(0, 3, 0);
   //scene.add(room);
-  
-  
+
   const hemLight = new THREE.HemisphereLight(0xbbbbbb, 0x888888, 5);
   hemLight.name = "Hemisphere Light";
   //hemLight.castShadow = true;
@@ -268,15 +288,15 @@ function init() {
   scene.add(hemLight);
 
   const light = new THREE.DirectionalLight(0xffffff, 3);
-  light.position.set(0, 20, 0).normalize();
+  light.position.set(0, 10, 3).normalize();
   light.name = "Directional Light";
   light.castShadow = true;
   //light.shadow.camera.zoom = 5;
-//Set up shadow properties for the light
-light.shadow.mapSize.width = 1024; // default
-light.shadow.mapSize.height = 1024; // default
-light.shadow.camera.near = 0; // default
-light.shadow.camera.far = 500; // default
+  //Set up shadow properties for the light
+  light.shadow.mapSize.width = 1024; // default
+  light.shadow.mapSize.height = 1024; // default
+  light.shadow.camera.near = 0; // default
+  light.shadow.camera.far = 500; // default
   scene.add(light);
 
   // Alternatively, to parse a previously loaded JSON structure
@@ -814,7 +834,7 @@ function checkForXR() {
                 "plane-detection",
                 "local-floor",
               ],
-              optionalFeatures: ["mesh-detection"],
+              optionalFeatures: ["mesh-detection", "depth-sensing"],
             })
           );
         } else {
@@ -1014,7 +1034,12 @@ function addMeshDetectionPhysics(data) {
     let material2 = new THREE.MeshBasicMaterial({
       wireframe: true,
     });
-    const material3 = new THREE.ShadowMaterial( { color: 0x444444, transparent: true, opacity: 0.6, renderOrder: 3 } );
+    const material3 = new THREE.ShadowMaterial({
+      color: 0x444444,
+      transparent: true,
+      opacity: 0.6,
+      renderOrder: 3,
+    });
 
     // create a buffer geometry
     const occlusionMesh = new THREE.Mesh(geometry, material);
