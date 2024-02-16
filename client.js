@@ -2,7 +2,7 @@ import * as THREE from "three";
 
 import { BoxLineGeometry } from "three/addons/geometries/BoxLineGeometry.js";
 import { XRButton } from "three/addons/webxr/XRButton.js";
-import { ARButton } from "./ARButton.js";
+import { ARButton } from "/ARButton.js";
 import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -834,7 +834,9 @@ function checkForXR() {
                 "plane-detection",
                 "local-floor",
               ],
-              optionalFeatures: ["mesh-detection", "depth-sensing"],
+              optionalFeatures: ["mesh-detection", 
+                                 //"depth-sensing"
+                                ],
             })
           );
         } else {
